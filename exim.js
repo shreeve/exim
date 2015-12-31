@@ -339,7 +339,18 @@ exports.Router = Router;
 var DOM = getDOM();
 
 exports.DOM = DOM;
-var createView = function createView(classArgs) {
+var createView = function createView(id, classArgs) {
+  if (typeof id === "string") {
+    classArgs._module = id;
+    if (!classArgs.displayName) {
+      var idComps = id.split("/");
+      classArgs.displayName = idComps[idComps.length - 1];
+    }
+  } else {
+    classArgs = id;
+    id = null;
+  }
+
   var ReactClass = React.createClass(classArgs);
   var ReactElement = React.createElement.bind(React.createElement, ReactClass);
 
